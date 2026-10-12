@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>青春戀愛選擇題 - 中學生性教育互動遊戲</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700;900&family=Fredoka:wght@500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background: linear-gradient(135deg, #fff5f7 0%, #f0f3ff 50%, #fff0f5 100%);
+            min-height: 100vh;
+        }
+        .font-fredoka {
+            font-family: 'Fredoka', cursive;
+        }
+        .card-shadow {
+            box-shadow: 0 15px 35px -5px rgba(255, 120, 150, 0.15), 0 5px 15px -3px rgba(0, 0, 0, 0.05);
+        }
+        .option-btn {
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .option-btn:hover {
+            transform: translateY(-4px) scale(1.02);
+        }
+        .option-btn:active {
+            transform: translateY(1px) scale(0.98);
+        }
+        .heart-bounce {
+            animation: heartBeat 1.5s infinite ease-in-out;
+        }
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            14% { transform: scale(1.15); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.15); }
+            70% { transform: scale(1); }
+        }
+        .avatar-glow {
+            box-shadow: 0 0 25px rgba(244, 114, 182, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.6);
+        }
+        .sparkle-rotate {
+            animation: spin 12s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center p-3 md:p-6 text-gray-800">
+
+    <div id="app-container" class="w-full max-w-2xl bg-white/90 backdrop-blur-md rounded-3xl p-5 md:p-8 card-shadow border border-pink-100 relative overflow-hidden transition-all duration-300">
+        
+        <!-- Top Floating Heart Motifs -->
+        <div class="absolute -top-10 -right-10 w-32 h-32 bg-pink-200/40 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-indigo-200/40 rounded-full blur-2xl pointer-events-none"></div>
+
+        <!-- SCREEN 1: WELCOME & GENDER SELECTION -->
+        <div id="screen-welcome" class="text-center py-4 fade-in">
+            <div class="inline-block p-4 bg-pink-100 rounded-full text-pink-500 mb-3 heart-bounce">
+                <i class="fa-solid fa-heart-pulse text-4xl"></i>
+            </div>
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">青春戀愛選擇題 ❤️</h1>
+            <p class="text-pink-600 font-semibold text-sm md:text-base mb-6">中學生擇偶與性教育指南：揀選屬於你嘅理想伴侶！</p>
+            
+            <div class="bg-pink-50/80 rounded-2xl p-4 text-left mb-6 border border-pink-100 text-xs md:text-sm text-gray-600 leading-relaxed">
+                <p class="font-bold text-pink-700 mb-1"><i class="fa-solid fa-lightbulb"></i> 遊戲說明：</p>
+                <p>• 總共有 <strong>8 條二選一題目</strong>。</p>
+                <p>• 前 5 條係「優秀條件大考驗」，後 3 條係「瑕疵接受度考驗」。</p>
+                <p>• 遊戲最後會根據你嘅選擇，揭曉你理想對象嘅<strong>樣貌原型與性格檔案</strong>！</p>
+            </div>
+
+            <h3 class="text-lg font-bold text-gray-700 mb-4">首先，你想尋找男定女性格的伴侶？</h3>
+            
+            <div class="grid grid-cols-2 gap-4 max-w-md mx-auto mb-4">
+                <button onclick="selectGender('M')" class="option-btn p-5 bg-gradient-to-br from-blue-50 to-indigo-100 hover:from-blue-100 hover:to-indigo-200 border-2 border-indigo-200 rounded-2xl flex flex-col items-center justify-center gap-2 group">
+                    <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-indigo-500 text-2xl shadow-sm group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-mars"></i>
+                    </div>
+                    <span class="font-bold text-indigo-800 text-base">想尋找 男朋友 👦🏻</span>
+                    <span class="text-xs text-indigo-500">陽光、學霸、暖男原型</span>
+                </button>
+
+                <button onclick="selectGender('F')" class="option-btn p-5 bg-gradient-to-br from-pink-50 to-rose-100 hover:from-pink-100 hover:to-rose-200 border-2 border-pink-200 rounded-2xl flex flex-col items-center justify-center gap-2 group">
+                    <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-pink-500 text-2xl shadow-sm group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-venus"></i>
+                    </div>
+                    <span class="font-bold text-rose-800 text-base">想尋找 女朋友 👧🏻</span>
+                    <span class="text-xs text-rose-500">甜美、女神、知性原型</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN 2: QUIZ INTERFACE -->
+        <div id="screen-quiz" class="hidden fade-in">
+            <!-- Progress Bar -->
+            <div class="mb-6">
+                <div class="flex justify-between items-center mb-2">
+                    <span id="quiz-badge" class="px-3 py-1 bg-pink-100 text-pink-700 font-bold text-xs rounded-full">
+                        第 <span id="q-num">1</span> / 8 題
+                    </span>
+                    <span id="q-category" class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full">
+                        ✨ 良好條件選擇
+                    </span>
+                </div>
+                <div class="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
+                    <div id="progress-bar" class="bg-gradient-to-r from-pink-400 to-rose-500 h-2.5 rounded-full transition-all duration-300" style="w-12%"></div>
+                </div>
+            </div>
+
+            <!-- Question Title -->
+            <div class="text-center mb-6">
+                <h2 id="q-title" class="text-lg md:text-xl font-bold text-gray-800 mb-1">題目載入中...</h2>
+                <p id="q-subtitle" class="text-xs md:text-sm text-gray-500">請從以下兩個條件中，揀出你較重視或較能接受的一項：</p>
+            </div>
+
+            <!-- Options Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <!-- Option A -->
+                <button onclick="makeChoice('A')" class="option-btn p-5 bg-gradient-to-b from-white to-pink-50/50 hover:to-pink-100/60 border-2 border-pink-200 rounded-2xl flex flex-col items-center text-center justify-between min-h-[180px] shadow-sm relative overflow-hidden group">
+                    <div class="w-12 h-12 bg-pink-100 text-pink-600 rounded-full flex items-center justify-center text-xl font-bold mb-3 group-hover:scale-110 transition-transform">
+                        A
+                    </div>
+                    <p id="optA-text" class="font-bold text-gray-800 text-sm md:text-base mb-2 leading-snug">選項 A</p>
+                    <span id="optA-tag" class="text-xs font-semibold px-2.5 py-1 bg-pink-200/60 text-pink-800 rounded-lg">標籤</span>
+                </button>
+
+                <!-- Option B -->
+                <button onclick="makeChoice('B')" class="option-btn p-5 bg-gradient-to-b from-white to-indigo-50/50 hover:to-indigo-100/60 border-2 border-indigo-200 rounded-2xl flex flex-col items-center text-center justify-between min-h-[180px] shadow-sm relative overflow-hidden group">
+                    <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-xl font-bold mb-3 group-hover:scale-110 transition-transform">
+                        B
+                    </div>
+                    <p id="optB-text" class="font-bold text-gray-800 text-sm md:text-base mb-2 leading-snug">選項 B</p>
+                    <span id="optB-tag" class="text-xs font-semibold px-2.5 py-1 bg-indigo-200/60 text-indigo-800 rounded-lg">標籤</span>
+                </button>
+            </div>
+
+            <!-- Hint Box -->
+            <div id="q-hint-box" class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-800 text-center flex items-center justify-center gap-2">
+                <i class="fa-solid fa-circle-info text-amber-500"></i>
+                <span id="q-hint">提示：思考下邊一個條件對你嘅相處最重要？</span>
+            </div>
+        </div>
+
+        <!-- SCREEN 3: RESULT & SEX EDUCATION REFLECTION -->
+        <div id="screen-result" class="hidden fade-in">
+            <div class="text-center mb-4">
+                <span class="px-3 py-1 bg-rose-100 text-rose-600 font-bold text-xs rounded-full">
+                    🎉 配對完成！你的擇偶傾向結果
+                </span>
+                <h2 class="text-2xl md:text-3xl font-extrabold text-gray-800 mt-2">你理想中的伴侶原型</h2>
+            </div>
+
+            <!-- Result Character Card -->
+            <div id="character-card" class="bg-gradient-to-br from-pink-50 via-white to-purple-50 rounded-2xl p-5 border-2 border-pink-200 mb-6 text-center card-shadow relative overflow-hidden">
+                
+                <!-- Background Decorative Rings -->
+                <div class="absolute -top-12 -left-12 w-36 h-36 bg-pink-300/20 rounded-full blur-xl pointer-events-none"></div>
+                <div class="absolute -bottom-12 -right-12 w-36 h-36 bg-indigo-300/20 rounded-full blur-xl pointer-events-none"></div>
+
+                <!-- Avatar Visual Display Container -->
+                <div class="relative w-40 h-40 mx-auto mb-4 flex items-center justify-center">
+                    <!-- Outer Decorative Glowing Ring -->
+                    <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-pink-400 via-purple-400 to-indigo-400 p-1 sparkle-rotate opacity-80"></div>
+                    
+                    <div id="avatar-container" class="relative w-36 h-36 rounded-full bg-white border-2 border-white avatar-glow flex items-center justify-center overflow-hidden shadow-lg transition-all duration-300">
+                        <!-- Dynamic Upgraded SVG Avatar or AI Generated Image goes here -->
+                    </div>
+
+                    <div class="absolute -bottom-1 -right-1 bg-gradient-to-r from-amber-400 to-yellow-500 text-white rounded-full w-9 h-9 flex items-center justify-center text-xs font-bold border-2 border-white shadow-md">
+                        <i class="fa-solid fa-crown text-sm"></i>
+                    </div>
+                </div>
+
+                <!-- AI Image Generator Button & Status -->
+                <div class="mb-4">
+                    <button id="ai-generate-btn" onclick="generateAiPortrait()" class="option-btn px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-full text-xs font-bold shadow-md flex items-center justify-center gap-2 mx-auto">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <span>生成 AI 專屬動漫頭像</span>
+                    </button>
+                    <div id="ai-loading" class="hidden text-xs text-purple-600 font-semibold mt-2 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-circle-notch fa-spin text-purple-500"></i>
+                        <span>AI 正在繪製高畫質動漫人物... 請稍候</span>
+                    </div>
+                </div>
+
+                <h3 id="result-archetype-title" class="text-xl md:text-2xl font-black text-pink-600 mb-1">高富帥 / 甜美女神</h3>
+                <p id="result-archetype-style" class="text-xs md:text-sm text-gray-500 font-bold mb-3">【外貌印象：高大陽光 · 運動系型男】</p>
+
+                <!-- Key Traits Badges -->
+                <div id="result-traits" class="flex flex-wrap justify-center gap-1.5 mb-4">
+                    <!-- Dynamic badges -->
+                </div>
+
+                <p id="result-desc" class="text-xs md:text-sm text-gray-600 leading-relaxed text-left bg-white/90 p-3.5 rounded-xl border border-pink-100 shadow-sm">
+                    根據你嘅選擇，你最看重對方的溝通能力同外在吸引力！
+                </p>
+            </div>
+
+            <!-- Sex Education Reflection Box -->
+            <div class="bg-indigo-50/90 rounded-2xl p-4 md:p-5 border border-indigo-100 mb-6 text-left">
+                <h4 class="font-bold text-indigo-900 text-sm md:text-base mb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-heart-circle-check text-indigo-600"></i>
+                    💡 中學生性教育及擇偶反思（6W 觀點）：
+                </h4>
+                <ul class="text-xs md:text-sm text-indigo-950 space-y-2 leading-relaxed">
+                    <li class="flex items-start gap-1.5">
+                        <span class="text-indigo-500 font-bold">•</span>
+                        <span><strong>Who (對象與人無完人)：</strong> 世界上冇完美嘅人。你剛才揀嘅缺點（例如：有脾氣或太直白），在現實拍拖時需要彼此容忍同溝通。</span>
+                    </li>
+                    <li class="flex items-start gap-1.5">
+                        <span class="text-indigo-500 font-bold">•</span>
+                        <span><strong>How (身體界線與尊重)：</strong> 理想嘅拍拖係基於<strong>互相尊重</strong>，絕對唔可以用「你愛我就要比我」嚟威脅對方做唔想做嘅事。</span>
+                    </li>
+                    <li class="flex items-start gap-1.5">
+                        <span class="text-indigo-500 font-bold">•</span>
+                        <span><strong>When (成熟時機)：</strong> 當你懂得照顧自己情緒、尊重別人界線時，先係最適合拍拖嘅階段。</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex gap-3">
+                <button onclick="restartQuiz()" class="option-btn flex-1 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl text-sm transition-colors">
+                    <i class="fa-solid fa-rotate-right mr-1"></i> 重新測試
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Game State Variables
+        let targetGender = 'M'; // 'M' for boyfriend, 'F' for girlfriend
+        let currentQIndex = 0;
+        let userChoices = [];
+        let currentArchetype = null;
+
+        // Question Database (8 Questions: 5 Positive, 3 Negative/Challenging)
+        const questionsData = {
+            M: [
+                {
+                    cat: "✨ 良好條件 (1/5)",
+                    isBad: false,
+                    title: "你較希望男朋友擁有邊種「外在吸引力」？",
+                    sub: "選擇你最心動的優點：",
+                    optA: "高大陽光、運動全能，喺校隊非常耀眼",
+                    tagA: "🏆 陽光型男",
+                    optB: "文質彬彬、穿搭乾淨整齊，笑起來超甜超溫柔",
+                    tagB: "👓 溫柔文青",
+                    hint: "提示：外表吸引力通常係第一印象，但性格相處先係長久關鍵。"
+                },
+                {
+                    cat: "✨ 良好條件 (2/5)",
+                    isBad: false,
+                    title: "關於「未來與才華」，你更看重哪一項？",
+                    sub: "選擇你認同的價值觀：",
+                    optA: "學霸一名、志向遠大（例如想做律師/醫生），對未來好有規劃",
+                    tagA: "📚 上進學霸",
+                    optB: "多才多藝、幽默風趣，隨時隨地都可以逗你笑",
+                    tagB: "🎭 幽默開心果",
+                    hint: "提示：上進心能帶給人安全感，幽默感能帶來情感價值。"
+                },
+                {
+                    cat: "✨ 良好條件 (3/5)",
+                    isBad: false,
+                    title: "關於「相處與陪伴模式」，你喜歡哪一種？",
+                    sub: "選擇你理想的日常關係：",
+                    optA: "24小時即時回覆訊息，隨時想見面，極度關心你",
+                    tagA: "📱 秒回黏人型",
+                    optB: "給予彼此獨立空間，各自努力溫習/練波，互相加油",
+                    tagB: "🌱 獨立成長型",
+                    hint: "提示：黏人代表重視，獨立代表信任，最緊要雙方步調一致。"
+                },
+                {
+                    cat: "✨ 良好條件 (4/5)",
+                    isBad: false,
+                    title: "拍拖約會時，你更希望他是怎樣的人？",
+                    sub: "選擇約會時的風格：",
+                    optA: "懂得製造浪漫驚喜，節日會精心準備禮物放閃",
+                    tagA: "🌹 浪漫儀式感",
+                    optB: "貼心實務，會幫你拎重嘢、提醒你帶遮、平淡而實在",
+                    tagB: "🥤 貼心照顧型",
+                    hint: "提示：儀式感帶來甜蜜，細心照顧帶來真實幸福感。"
+                },
+                {
+                    cat: "✨ 良好條件 (5/5)",
+                    isBad: false,
+                    title: "當你情緒低落時，你希望他怎樣回應？",
+                    sub: "選擇情緒支援方式：",
+                    optA: "理性幫你分析問題，給予實用的建議同解決方案",
+                    tagA: "💡 理性軍師",
+                    optB: "默默聽你傾訴、抱抱你，完全站在你這邊同理你",
+                    tagB: "🎧 心靈傾聽者",
+                    hint: "提示：溝通風格的契合，能大大減少戀愛中的衝突。"
+                },
+
+                // Q6-Q8 Negative (Challenging)
+                {
+                    cat: "⚠️ 瑕疵考驗 (1/3)",
+                    isBad: true,
+                    title: "【兩害相權】如果必須接受一個瑕疵，你寧願他：",
+                    sub: "人無完人，哪種瑕疵你比較能夠忍受？",
+                    optA: "稍微有一點「大男子主義/小脾氣」，需要你多哄哄他",
+                    tagA: "👑 少爺脾氣",
+                    optB: "平時「冷若冰霜/扮高傲」，不善於表達內心感受",
+                    tagB: "❄️ 高冷難透",
+                    hint: "考驗：小脾氣需要包容，高冷則需要耐性打開心扉。"
+                },
+                {
+                    cat: "⚠️ 瑕疵考驗 (2/3)",
+                    isBad: true,
+                    title: "【兩害相權】以下哪種日常生活習慣你較能接受？",
+                    sub: "選擇你底線較寬容的一項：",
+                    optA: "說話太過直白、不懂講客套話，偶爾會直腸直肚傷到人",
+                    tagA: "🗣️ 直腸直肚",
+                    optB: "對自己要求極高，有時會過度緊張或為小事焦慮",
+                    tagB: "焦慮追求完美",
+                    hint: "考驗：直白需要學習說話藝術，焦慮需要你給予安全感。"
+                },
+                {
+                    cat: "⚠️ 瑕疵考驗 (3/3)",
+                    isBad: true,
+                    title: "【兩害相權】最後一關！你比較能忍受哪種心態？",
+                    sub: "選擇你可以接受的性格短板：",
+                    optA: "稍微有一點自信過頭（自大狂魔），覺得自己永遠是對的",
+                    tagA: "🦁 自信過頭",
+                    optB: "完全沒有主見，所有事情（連食乜）都要你做決定",
+                    tagB: "🐥 無主見依賴",
+                    hint: "考驗：自大需要平等的溝通界線，無主見需要你引導他獨立。"
+                }
+            ],
+            F: [ // Questions when looking for a Girlfriend
+                // Q1-Q5 Positive
+                {
+                    cat: "✨ 良好條件 (1/5)",
+                    isBad: false,
+                    title: "你較希望女朋友擁有邊種「外在吸引力」？",
+                    sub: "選擇你最心動的優點：",
+                    optA: "甜美可愛、笑眼盈盈，係大家公認的甜妹校花",
+                    tagA: "🌸 甜美校花",
+                    optB: "知性大方、氣質冷艷，穿搭簡約有個人品味",
+                    tagB: "💃 氣質女神",
+                    hint: "提示：外表吸引力固然重要，但內在特質才能持久。"
+                },
+                {
+                    cat: "✨ 良好條件 (2/5)",
+                    isBad: false,
+                    title: "關於「才華與性格」，你更欣賞哪一種？",
+                    sub: "選擇你認同的性格特質：",
+                    optA: "學業成績頂尖、做事有條理，有明確志向",
+                    tagA: "🎓 獨立學霸",
+                    optB: "充滿活力、熱愛運動/藝術，生活過得豐富多彩",
+                    tagB: "🎨 活力女孩",
+                    hint: "提示：上進心能互相拉拔，活力能為生活增添色彩。"
+                },
+                {
+                    cat: "✨ 良好條件 (3/5)",
+                    isBad: false,
+                    title: "關於「陪伴模式」，你理想中的相處係？",
+                    sub: "選擇你喜歡的粘人程度：",
+                    optA: "喜歡向你撒嬌、分享生活瑣事，非常依賴你",
+                    tagA: "🎀 甜蜜撒嬌型",
+                    optB: "給予彼此足夠空間，支持你的興趣與圈子",
+                    tagB: "🌿 理性空間型",
+                    hint: "提示：相處最重要係找到雙方都舒服的「心理距離」。"
+                },
+                {
+                    cat: "✨ 良好條件 (4/5)",
+                    isBad: false,
+                    title: "節日或平時相處時，你更喜歡：",
+                    sub: "選擇互動方式：",
+                    optA: "喜歡手作禮物、心意卡，注重兩人專屬的浪漫回憶",
+                    tagA: "💌 浪漫手作心意",
+                    optB: "性格直爽好相處，像最好的兄弟/朋友一樣打打鬧鬧",
+                    tagB: "🤝 夥伴型相處",
+                    hint: "提示：浪漫帶來心動，夥伴關係帶來長遠的陪伴。"
+                },
+                {
+                    cat: "✨ 良好條件 (5/5)",
+                    isBad: false,
+                    title: "當遇到衝突或意見不合時，你希望她：",
+                    sub: "選擇溝通與解決方式：",
+                    optA: "冷靜坦誠溝通，願意講出感受並尋求共識",
+                    tagA: "🕊️ 理性溝通",
+                    optB: "用溫柔包容你，願意給予彼此體諒與退讓",
+                    tagB: "❤️ 溫柔體諒",
+                    hint: "提示：好的伴侶懂得在衝突中建立更深的信任。"
+                },
+
+                // Q6-Q8 Negative (Challenging)
+                {
+                    cat: "⚠️ 瑕疵考驗 (1/3)",
+                    isBad: true,
+                    title: "【兩害相權】如果必須接受一個瑕疵，你寧願她：",
+                    sub: "人無完人，哪種瑕疵你較能接受？",
+                    optA: "稍微有一點「大小姐脾氣」，偶爾需要你小哄一下",
+                    tagA: "👑 大小姐脾氣",
+                    optB: "平時有點高冷，情緒不輕易外露，需要時間了解",
+                    tagB: "❄️ 高冷防備",
+                    hint: "考驗：脾氣需要耐心，高冷需要時間建立信任。"
+                },
+                {
+                    cat: "⚠️ 瑕疵考驗 (2/3)",
+                    isBad: true,
+                    title: "【兩害相權】以下哪種情況你較能包容？",
+                    sub: "選擇你底線較寬容的一項：",
+                    optA: "缺乏安全感，偶爾會常問「你愛唔愛我」需要反覆確認",
+                    tagA: "🥺 患得患失",
+                    optB: "心直口快、說話過於直接，有時缺乏語言修飾",
+                    tagB: "⚡ 心直口快",
+                    hint: "考驗：安全感需要你主動給予，直白需要彼此包容。"
+                },
+                {
+                    cat: "⚠️ 瑕疵考驗 (3/3)",
+                    isBad: true,
+                    title: "【兩害相權】最後一關！你比較能忍受哪種心態？",
+                    sub: "選擇你可以接受的性格短板：",
+                    optA: "比較固執、好勝心強，有時一定要爭到贏",
+                    tagA: "🔥 好勝固執",
+                    optB: "比較沒有主見、容易受同輩影響，需要你引導",
+                    tagB: "🍃 無主見隨和",
+                    hint: "考驗：好勝需要學會退讓，無主見需要引導她找回自我。"
+                }
+            ]
+        };
+
+        function selectGender(gender) {
+            targetGender = gender;
+            currentQIndex = 0;
+            userChoices = [];
+            
+            document.getElementById('screen-welcome').classList.add('hidden');
+            document.getElementById('screen-quiz').classList.remove('hidden');
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const list = questionsData[targetGender];
+            const q = list[currentQIndex];
+
+            document.getElementById('q-num').innerText = currentQIndex + 1;
+            document.getElementById('q-category').innerText = q.cat;
+            document.getElementById('q-title').innerText = q.title;
+            document.getElementById('q-subtitle').innerText = q.sub;
+
+            // Update Progress bar
+            const pct = ((currentQIndex + 1) / 8) * 100;
+            document.getElementById('progress-bar').style.width = `${pct}%`;
+
+            // Option A
+            document.getElementById('optA-text').innerText = q.optA;
+            document.getElementById('optA-tag').innerText = q.tagA;
+
+            // Option B
+            document.getElementById('optB-text').innerText = q.optB;
+            document.getElementById('optB-tag').innerText = q.tagB;
+
+            // Hint
+            document.getElementById('q-hint').innerText = q.hint;
+
+            // Style adapt for Bad/Warning Questions
+            const hintBox = document.getElementById('q-hint-box');
+            if (q.isBad) {
+                hintBox.className = "p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-800 text-center flex items-center justify-center gap-2";
+            } else {
+                hintBox.className = "p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-800 text-center flex items-center justify-center gap-2";
+            }
+        }
+
+        function makeChoice(choice) {
+            userChoices.push(choice);
+
+            if (currentQIndex < 7) {
+                currentQIndex++;
+                renderQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            document.getElementById('screen-quiz').classList.add('hidden');
+            document.getElementById('screen-result').classList.remove('hidden');
+
+            // Reset AI button state
+            const aiBtn = document.getElementById('ai-generate-btn');
+            aiBtn.disabled = false;
+            aiBtn.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles"></i><span>生成 AI 專屬動漫頭像</span>`;
+            document.getElementById('ai-loading').classList.add('hidden');
+
+            // Analyze choices
+            const countA = userChoices.filter(c => c === 'A').length;
+            const countB = userChoices.filter(c => c === 'B').length;
+
+            let archetype = {};
+
+            if (targetGender === 'M') {
+                // Boyfriend archetypes
+                if (userChoices[0] === 'A' && userChoices[1] === 'B') {
+                    archetype = {
+                        title: "陽光高富帥 · 校隊明星",
+                        style: "【外貌形象：高大身材 · 運動風自信笑容】",
+                        desc: "你心目中嘅理想男朋友係一個充滿活力、外向陽光嘅耀眼男神！佢能在球場上閃耀，又能帶給你快樂。雖然可能偶爾有點自信過頭，但只要給予空間，他會是你最有光彩的伴侶。",
+                        traits: ["🏀 運動全能", "☀️ 陽光自信", "🔥 熱情放閃", "👑 目光焦點"],
+                        svgBg: "#E0F2FE",
+                        avatarSvg: generateMaleAvatar('sunny'),
+                        aiPrompt: "High quality anime portrait of a handsome tall Japanese high school male athlete, confident bright smile, trendy short brown hair, wearing a navy blue basketball team jersey, sunny day background with subtle bokeh light particles, digital art style, vibrant colors, detailed eyes"
+                    };
+                } else if (userChoices[1] === 'A' || userChoices[4] === 'A') {
+                    archetype = {
+                        title: "溫柔學霸 · 律師志願生",
+                        style: "【外貌形象：乾淨眼鏡 · 沉穩文青氣質】",
+                        desc: "你最欣賞有上進心、思維清晰嘅理性男朋友！佢對未來充滿目標（例如想成為律師或專業人士），雖然可能行程滿檔、平時說話理性講道理，但能帶給你極高的安全感與未來共識。",
+                        traits: ["📚 上進學霸", "⚖️ 理性頭腦", "👓 乾淨氣質", "🛡️ 安全感滿分"],
+                        svgBg: "#EEF2FF",
+                        avatarSvg: generateMaleAvatar('smart'),
+                        aiPrompt: "Anime character illustration, handsome intelligent male student, neat dark hair, stylish round thin glasses, wearing a white collared shirt with a blazer, gentle calm smile, soft library bokeh background, masterpiece, fine details"
+                    };
+                } else if (userChoices[3] === 'B' || userChoices[4] === 'B') {
+                    archetype = {
+                        title: "貼心暖男 · 心靈傾聽者",
+                        style: "【外貌形象：親切笑容 · 溫暖舒服穿搭】",
+                        desc: "比起高調，你更看重無微不至嘅关懷與情感陪伴！佢係一個極度細心嘅暖男，會記得你喜好、聽你傾訴情緒。就算偶爾有點患得患失，但對你的真心絕不懷疑。",
+                        traits: ["🥤 細心照顧", "🎧 心靈傾聽", "🧸 溫柔陪伴", "❤️ 感情專一"],
+                        svgBg: "#FDF2F8",
+                        avatarSvg: generateMaleAvatar('warm'),
+                        aiPrompt: "Anime illustration of a warm caring handsome boyfriend, soft fluffy chestnut hair, warm blushing smile, wearing a comfy cozy pastel pink hoodie, warm golden hour ambient lighting, heartwarming atmosphere, highly detailed"
+                    };
+                } else {
+                    archetype = {
+                        title: "幽默文青 · 快樂源泉",
+                        style: "【外貌形象：隨性髮型 · 潮流文青風格】",
+                        desc: "你喜歡相處輕鬆、充滿歡樂嘅戀愛關係！佢非常幽默風趣，懂得用浪漫驚喜逗你開心。就算有時思想天馬行空、說話直白，但有他在身邊永遠不會無聊。",
+                        traits: ["🎭 幽默搞笑", "🌹 浪漫驚喜", "🎨 天馬行空", "✨ 歡樂源泉"],
+                        svgBg: "#FEF3C7",
+                        avatarSvg: generateMaleAvatar('funny'),
+                        aiPrompt: "Anime art style, energetic handsome male high schooler with trendy stylish hair, playful wink and bright cheerful grin, wearing a cool denim jacket, colorful aesthetic background, dynamic composition, 8k resolution character art"
+                    };
+                }
+            } else {
+                // Girlfriend archetypes
+                if (userChoices[0] === 'A' && userChoices[2] === 'A') {
+                    archetype = {
+                        title: "甜美校花 · 撒嬌可人兒",
+                        style: "【外貌形象：甜美長髮 · 甜甜笑眼大眼睛】",
+                        desc: "你最容易被甜美可愛、會向你撒嬌嘅女孩子吸引！佢喜歡與你分享生活中所有大小事，依賴你的保護。雖然偶爾會有一點大小姐脾氣需要你哄，但甜美的互動能讓你感到無比幸福。",
+                        traits: ["🌸 甜美可愛", "🎀 懂撒嬌", "📸 浪漫拍照", "💖 感情豐富"],
+                        svgBg: "#FCE7F3",
+                        avatarSvg: generateFemaleAvatar('sweet'),
+                        aiPrompt: "High quality anime portrait of an extremely cute Japanese high school girl, long flowing wavy brown hair with cute ribbon hairclip, big sparkling anime eyes, sweet innocent smile, wearing a pink cute sailor uniform, cherry blossom petals floating background, masterpiece art"
+                    };
+                } else if (userChoices[1] === 'A' || userChoices[4] === 'A') {
+                    archetype = {
+                        title: "冷艷學霸 · 知性女神",
+                        style: "【外貌形象：簡約長髮/馬尾 · 清秀知性氣質】",
+                        desc: "你欣賞獨立、有想法且有氣質嘅知性女生！佢成績優秀、做事有條不離，溝通時理性客觀。雖然平時外表可能有點高冷、不輕易透露心事，但了解後會發現她極其專一可靠。",
+                        traits: ["🎓 知性獨立", "❄️ 氣質高冷", "🕊️ 理性溝通", "🌟 有遠大志向"],
+                        svgBg: "#F3E8FF",
+                        avatarSvg: generateFemaleAvatar('smart'),
+                        aiPrompt: "Elegant anime illustration of a gorgeous intelligent high school girl, dark sleek hair in a stylish ponytail, beautiful clear eyes, confident elegant smile, wearing a chic cardigan, soft twilight lavender lighting, refined atmosphere"
+                    };
+                } else if (userChoices[3] === 'B' || userChoices[1] === 'B') {
+                    archetype = {
+                        title: "率真活力 Girl · 最佳夥伴",
+                        style: "【外貌形象：短髮/運動風格 · 陽光燦爛笑容】",
+                        desc: "你理想中嘅女朋友同時亦係你最好嘅朋友！佢性格爽朗大方，喜歡運動與戶外活動，能與你打成一片。相處毫無壓力，雖然說話有時直腸直肚，但最真實誠懇。",
+                        traits: ["👟 率真活力", "🤝 夥伴相處", "⚡ 心直口快", "☀️ 無壓力相處"],
+                        svgBg: "#ECFDF5",
+                        avatarSvg: generateFemaleAvatar('sporty'),
+                        aiPrompt: "Vibrant anime art of an energetic tomboyish cute girl, short sporty brown hair, bright sparkling smile, wearing a sporty green hoodie and headphones around neck, sunny outdoor athletic park background, energetic atmosphere"
+                    };
+                } else {
+                    archetype = {
+                        title: "溫柔治癒系 · 體貼心靈導師",
+                        style: "【外貌形象：溫和中長髮 · 柔和氣質穿搭】",
+                        desc: "你渴望一段溫柔互相體諒嘅平穩關係！佢非常懂得體貼照顧別人的感受，願意傾聽你的煩惱。就算偶爾為小事煩惱焦慮，但她給予的溫暖能治癒你所有的不開心。",
+                        traits: ["🕊️ 溫柔體諒", "💌 手作心意", "☕ 治癒心靈", "❤️ 包容善良"],
+                        svgBg: "#FFF7ED",
+                        avatarSvg: generateFemaleAvatar('gentle'),
+                        aiPrompt: "Heartwarming anime illustration of a gentle caring high school girl, soft shoulder-length caramel hair, soft smiling eyes, warm blush, holding a warm cup of tea, wearing a soft pastel cardigan, cozy soft glow background"
+                    };
+                }
+            }
+
+            currentArchetype = archetype;
+
+            // Render Result DOM
+            document.getElementById('result-archetype-title').innerText = archetype.title;
+            document.getElementById('result-archetype-style').innerText = archetype.style;
+            document.getElementById('result-desc').innerText = archetype.desc;
+            document.getElementById('avatar-container').style.backgroundColor = archetype.svgBg;
+            document.getElementById('avatar-container').innerHTML = archetype.avatarSvg;
+
+            // Render Trait Badges
+            const traitsContainer = document.getElementById('result-traits');
+            traitsContainer.innerHTML = archetype.traits.map(t => 
+                `<span class="px-2.5 py-1 bg-white border border-pink-200 text-pink-700 font-bold text-xs rounded-full shadow-sm">${t}</span>`
+            ).join('');
+        }
+
+        // High Quality Upgraded SVG Avatar Generators
+        function generateMaleAvatar(type) {
+            const defs = `
+                <defs>
+                    <linearGradient id="skinG" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#FFE0D1"/>
+                        <stop offset="100%" stop-color="#F3C3B0"/>
+                    </linearGradient>
+                    <linearGradient id="hairG_sunny" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#5B3A29"/>
+                        <stop offset="100%" stop-color="#2C160B"/>
+                    </linearGradient>
+                    <linearGradient id="hairG_smart" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#374151"/>
+                        <stop offset="100%" stop-color="#111827"/>
+                    </linearGradient>
+                    <linearGradient id="hairG_warm" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#7C2D12"/>
+                        <stop offset="100%" stop-color="#451A03"/>
+                    </linearGradient>
+                    <linearGradient id="shirtG_sunny" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stop-color="#2563EB"/>
+                        <stop offset="100%" stop-color="#1D4ED8"/>
+                    </linearGradient>
+                    <linearGradient id="shirtG_smart" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#4F46E5"/>
+                        <stop offset="100%" stop-color="#312E81"/>
+                    </linearGradient>
+                    <linearGradient id="eyeG" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#1F2937"/>
+                        <stop offset="100%" stop-color="#111827"/>
+                    </linearGradient>
+                    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+                        <feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.2"/>
+                    </filter>
+                </defs>
+            `;
+
+            if (type === 'sunny') {
+                return `<svg viewBox="0 0 120 120" class="w-full h-full">
+                    ${defs}
+                    <!-- Aura Back Glow -->
+                    <circle cx="60" cy="60" r="55" fill="#3B82F6" opacity="0.15"/>
+                    <!-- Neck & Shoulders -->
+                    <path d="M48 78 L72 78 L76 115 L44 115 Z" fill="url(#skinG)"/>
+                    <path d="M28 92 C 38 82, 82 82, 92 92 L 98 120 L 22 120 Z" fill="url(#shirtG_sunny)" filter="url(#shadow)"/>
+                    <path d="M50 88 L 60 98 L 70 88" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+                    <!-- Face Base -->
+                    <path d="M36 42 Q 36 78 60 80 Q 84 78 84 42 Q 84 28 60 28 Q 36 28 36 42" fill="url(#skinG)" filter="url(#shadow)"/>
+                    <!-- Ears -->
+                    <circle cx="35" cy="52" r="5" fill="#F3C3B0"/>
+                    <circle cx="85" cy="52" r="5" fill="#F3C3B0"/>
+                    <!-- Hair (Back Spike) -->
+                    <path d="M30 40 Q 22 20 40 16 Q 60 10 80 16 Q 98 20 90 40 Q 85 22 60 20 Q 35 22 30 40" fill="url(#hairG_sunny)"/>
+                    <!-- Front Bangs -->
+                    <path d="M34 32 Q 45 38 52 28 Q 58 38 68 28 Q 78 38 86 30 Q 75 18 60 18 Q 45 18 34 32" fill="url(#hairG_sunny)"/>
+                    <!-- Hair Highlight -->
+                    <path d="M42 22 Q 52 18 62 22" fill="none" stroke="#A16207" stroke-width="2" opacity="0.6"/>
+                    <!-- Eyebrows -->
+                    <path d="M40 40 Q 48 35 53 40" stroke="#2C160B" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                    <path d="M67 40 Q 72 35 80 40" stroke="#2C160B" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                    <!-- Anime Eyes -->
+                    <ellipse cx="46" cy="48" rx="5" ry="6" fill="url(#eyeG)"/>
+                    <ellipse cx="74" cy="48" rx="5" ry="6" fill="url(#eyeG)"/>
+                    <circle cx="44" cy="46" r="2" fill="#FFFFFF"/>
+                    <circle cx="72" cy="46" r="2" fill="#FFFFFF"/>
+                    <circle cx="47" cy="50" r="0.8" fill="#FFFFFF"/>
+                    <circle cx="75" cy="50" r="0.8" fill="#FFFFFF"/>
+                    <!-- Confident Smile -->
+                    <path d="M46 62 Q 60 74 74 62 Q 60 68 46 62 Z" fill="#EF4444" stroke="#991B1B" stroke-width="1"/>
+                    <!-- Cheek Blush -->
+                    <ellipse cx="39" cy="54" rx="4" ry="2" fill="#F43F5E" opacity="0.25"/>
+                    <ellipse cx="81" cy="54" rx="4" ry="2" fill="#F43F5E" opacity="0.25"/>
+                </svg>`;
+            } else if (type === 'smart') {
+                return `<svg viewBox="0 0 120 120" class="w-full h-full">
+                    ${defs}
+                    <circle cx="60" cy="60" r="55" fill="#6366F1" opacity="0.15"/>
+                    <!-- Neck & Collar -->
+                    <path d="M48 78 L72 78 L76 115 L44 115 Z" fill="url(#skinG)"/>
+                    <path d="M25 90 C 35 82, 85 82, 95 90 L 100 120 L 20 120 Z" fill="url(#shirtG_smart)" filter="url(#shadow)"/>
+                    <polygon points="60,86 52,105 68,105" fill="#FFFFFF"/>
+                    <polygon points="60,92 56,120 64,120" fill="#312E81"/>
+                    <!-- Head Base -->
+                    <path d="M37 42 Q 37 78 60 80 Q 83 78 83 42 Q 83 28 60 28 Q 37 28 37 42" fill="url(#skinG)"/>
+                    <!-- Neat Dark Hair -->
+                    <path d="M32 38 C 30 18, 90 18, 88 38 Q 78 22 60 22 Q 42 22 32 38" fill="url(#hairG_smart)"/>
+                    <path d="M34 32 Q 48 30 55 36 Q 62 28 75 32 Q 82 28 86 34 Q 72 20 60 20 Q 44 20 34 32" fill="url(#hairG_smart)"/>
+                    <!-- Glasses Frame -->
+                    <rect x="37" y="43" width="18" height="13" rx="3" fill="none" stroke="#1E293B" stroke-width="2.2"/>
+                    <rect x="65" y="43" width="18" height="13" rx="3" fill="none" stroke="#1E293B" stroke-width="2.2"/>
+                    <line x1="55" y1="48" x2="65" y2="48" stroke="#1E293B" stroke-width="2.2"/>
+                    <!-- Glass Shine -->
+                    <line x1="39" y1="45" x2="47" y2="53" stroke="#FFFFFF" stroke-width="1.2" opacity="0.6"/>
+                    <line x1="67" y1="45" x2="75" y2="53" stroke="#FFFFFF" stroke-width="1.2" opacity="0.6"/>
+                    <!-- Eyes Behind Glasses -->
+                    <circle cx="46" cy="49" r="3" fill="#1F2937"/>
+                    <circle cx="74" cy="49" r="3" fill="#1F2937"/>
+                    <circle cx="45" cy="48" r="1" fill="#FFFFFF"/>
+                    <circle cx="73" cy="48" r="1" fill="#FFFFFF"/>
+                    <!-- Calm Gentle Smile -->
+                    <path d="M48 64 Q 60 70 72 64" stroke="#374151" stroke-width="2" stroke-linecap="round" fill="none"/>
+                </svg>`;
+            } else if (type === 'warm') {
+                return `<svg viewBox="0 0 120 120" class="w-full h-full">
+                    ${defs}
+                    <circle cx="60" cy="60" r="55" fill="#EC4899" opacity="0.15"/>
+                    <path d="M48 78 L72 78 L76 115 L44 115 Z" fill="url(#skinG)"/>
+                    <!-- Soft Hoodie -->
+                    <path d="M22 92 C 32 80, 88 80, 98 92 L 102 120 L 18 120 Z" fill="#F472B6" filter="url(#shadow)"/>
+                    <path d="M48 85 Q 60 98 72 85" fill="none" stroke="#FFFFFF" stroke-width="3"/>
+                    <!-- Face -->
+                    <path d="M36 42 Q 36 78 60 80 Q 84 78 84 42 Q 84 28 60 28 Q 36 28 36 42" fill="url(#skinG)"/>
+                    <!-- Soft Fluffy Hair -->
+                    <path d="M28 42 C 24 18, 96 18, 92 42 C 84 24 60 22 28 42" fill="url(#hairG_warm)"/>
+                    <path d="M32 36 Q 44 42 56 34 Q 68 42 88 34 Q 78 22 60 22 Q 42 22 32 36" fill="url(#hairG_warm)"/>
+                    <!-- Smiling Eyes (Happy Arcs) -->
+                    <path d="M41 48 Q 47 42 53 48" stroke="#451A03" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+                    <path d="M67 48 Q 73 42 79 48" stroke="#451A03" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+                    <!-- Rosy Cheeks -->
+                    <circle cx="38" cy="55" r="6" fill="#FB7185" opacity="0.45"/>
+                    <circle cx="82" cy="55" r="6" fill="#FB7185" opacity="0.45"/>
+                    <!-- Warm Smile -->
+                    <path d="M46 62 Q 60 72 74 62" stroke="#451A03" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                </svg>`;
+            } else { // funny
+                return `<svg viewBox="0 0 120 120" class="w-full h-full">
+                    ${defs}
+                    <circle cx="60" cy="60" r="55" fill="#F59E0B" opacity="0.15"/>
+                    <path d="M48 78 L72 78 L76 115 L44 115 Z" fill="url(#skinG)"/>
+                    <!-- Denim Jacket -->
+                    <path d="M22 90 C 35 80, 85 80, 98 90 L 102 120 L 18 120 Z" fill="#D97706" filter="url(#shadow)"/>
+                    <path d="M50 82 L 60 120 L 70 82" fill="#FEF3C7"/>
+                    <path d="M36 42 Q 36 78 60 80 Q 84 78 84 42 Q 84 28 60 28 Q 36 28 36 42" fill="url(#skinG)"/>
+                    <!-- Messy Trendy Hair -->
+                    <path d="M26 38 Q 20 15 42 12 Q 60 8 78 12 Q 100 15 94 38 Q 80 18 60 18 Q 40 18 26 38" fill="#1E293B"/>
+                    <path d="M30 32 Q 42 42 48 30 Q 56 42 66 30 Q 76 42 88 30 Q 78 18 60 18 Q 42 18 30 32" fill="#1E293B"/>
+                    <!-- Winking Eye Right, Open Eye Left -->
+                    <ellipse cx="46" cy="48" rx="4.5" ry="5.5" fill="#111827"/>
+                    <circle cx="45" cy="46" r="1.8" fill="#FFFFFF"/>
+                    <path d="M68 48 Q 74 42 80 48" stroke="#111827" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+                    <!-- Playful Smile -->
+                    <path d="M44 61 Q 58 76 74 60" stroke="#111827" stroke-width="2.5" fill="#FFFFFF"/>
+                </svg>`;
+            }
+        }
+
+        function generateFemaleAvatar(type) {
+            const defs = `
+                <defs>
+                    <linearGradient id="fSkinG" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#FFF0E6"/>
+                        <stop offset="100%" stop-color="#FCD5CE"/>
+                    </linearGradient>
+                    <linearGradient id="hairG_sweet" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#8B4513"/>
+                        <stop offset="100%" stop-color="#5C2C06"/>
+                    </linearGradient>
+                    <linearGradient id="hairG_fSmart" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#1E1B4B"/>
+                        <stop offset="100%" stop-color="#0F172A"/>
+                    </linearGradient>
+                    <linearGradient id="hairG_fGentle" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#B45309"/>
+                        <stop offset="100%" stop-color="#78350F"/>
+                    </linearGradient>
+                    <filter id="fShadow" x="-10%" y="-10%" width="120%" height="120%">
+                        <feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.15"/>
+                    </filter>
+                </defs>
+            `;
+
+            if (type === 'sweet') {
+                return `<svg viewBox="0 0 120 120" class="w-full h-full">
+                    ${defs}
+                    <circle cx="60" cy="60" r="55" fill="#F43F5E" opacity="0.15"/>
+                    <!-- Back Long Waves Hair -->
+                    <path d="M22 50 C 12 25, 108 25, 98 50 C 104 85, 88 115, 88 120 L 32 120 C 32 115, 16 85, 22 50 Z" fill="url(#hairG_sweet)"/>
+                    <!-- Neck & Collar -->
+                    <path d="M50 75 L70 75 L74 115 L46 115 Z" fill="url(#fSkinG)"/>
+                    <path d="M28 92 C 38 82, 82 82, 92 92 L 96 120 L 24 120 Z" fill="#FDA4AF" filter="url(#fShadow)"/>
+                    <path d="M46 90 L 60 102 L 74 90" fill="#FFFFFF"/>
+                    <!-- Face -->
+                    <path d="M38 42 Q 38 76 60 78 Q 82 76 82 42 Q 82 28 60 28 Q 38 28 38 42" fill="url(#fSkinG)"/>
+                    <!-- Bangs -->
+                    <path d="M34 32 Q 60 44 86 32 Q 72 22 60 22 Q 48 22 34 32" fill="url(#hairG_sweet)"/>
+                    <!-- Ribbon Accessory -->
+                    <path d="M82 24 Q 92 18 96 28 Q 86 32 82 24" fill="#F43F5E"/>
+                    <circle cx="84" cy="26" r="3" fill="#FFE4E6"/>
+                    <!-- Sparkling Anime Eyes -->
+                    <ellipse cx="46" cy="48" rx="5.5" ry="7" fill="#881337"/>
+                    <ellipse cx="74" cy="48" rx="5.5" ry="7" fill="#881337"/>
+                    <circle cx="44" cy="45" r="2.5" fill="#FFFFFF"/>
+                    <circle cx="72" cy="45" r="2.5" fill="#FFFFFF"/>
+                    <circle cx="47" cy="51" r="1.2" fill="#FFFFFF"/>
+                    <circle cx="75" cy="51" r="1.2" fill="#FFFFFF"/>
+                    <!-- Eyelashes -->
+                    <path d="M39 43 Q 46 39 52 44" stroke="#4C0519" stroke-width="1.8" fill="none"/>
+                    <path d="M68 44 Q 74 39 81 43" stroke="#4C0519" stroke-width="1.8" fill="none"/>
+                    <!-- Cute Blush -->
+                    <ellipse cx="38" cy="56" rx="6" ry="3" fill="#FB7185" opacity="0.45"/>
+                    <ellipse cx="82" cy="56" rx="6" ry="3" fill="#FB7185" opacity="0.45"/>
+                    <!-- Sweet Smile -->
+                    <path d="M48 62 Q 60 70 72 62" stroke="#881337" stroke-width="2" stroke-linecap="round" fill="none"/>
+                </svg>`;
+            } else if (type === 'smart') {
+                return `<svg viewBox="0 0 120 120" class="w-full h-full">
+                    ${defs}
+                    <circle cx="60" cy="60" r="55" fill="#8B5CF6" opacity="0.15"/>
+                    <!-- Dark Sleek Hair Back -->
+                    <path d="M22 45 C 22 18, 98 18, 98 45 C 102 75, 90 115, 90 120 L 30 120 C 30 115, 18 75, 22 45 Z" fill="url(#hairG_fSmart)"/>
+                    <path d="M50 75 L70 75 L74 115 L46 115 Z" fill="url(#fSkinG)"/>
+                    <!-- Chic Blazer -->
+                    <path d="M28 90 C 38 82, 82 82, 92 90 L 96 120 L 24 120 Z" fill="#7C3AED" filter="url(#fShadow)"/>
+                    <path d="M52 90 L 60 108 L 68 90" fill="#FFFFFF"/>
+                    <!-- Face -->
+                    <path d="M38 42 Q 38 76 60 78 Q 82 76 82 42 Q 82 28 60 28 Q 38 28 38 42" fill="url(#fSkinG)"/>
+                    <!-- Front Hair Side Part -->
+                    <path d="M26 36 Q 50 25 88 38 Q 78 22 60 22 Q 42 22 26 36" fill="url(#hairG_fSmart)"/>
+                    <!-- Elegant Eyes -->
+                    <ellipse cx="46" cy="48" rx="4.5" ry="5.8" fill="#1E1B4B"/>
+                    <ellipse cx="74" cy="48" rx="4.5" ry="5.8" fill="#1E1B4B"/>
+                    <circle cx="44" cy="46" r="1.8" fill="#FFFFFF"/>
+                    <circle cx="72" cy="46" r="1.8" fill="#FFFFFF"/>
+                    <!-- Refined Eyebrows -->
+                    <path d="M40 39 Q 47 36 53 40" stroke="#0F172A" stroke-width="1.8" fill="none"/>
+                    <path d="M67 40 Q 73 36 80 39" stroke="#0F172A" stroke-width="1.8" fill="none"/>
+                    <!-- Confident Refined Smile -->
+                    <path d="M49 63 Q 60 68 71 63" stroke="#1E1B4B" stroke-width="2" stroke-linecap="round" fill="none"/>
+                </svg>`;
+            } else if (type === 'sporty') {
+                return `<svg viewBox="0 0 120 120" class="w-full h-full">
+                    ${defs}
+                    <circle cx="60" cy="60" r="55" fill="#10B981" opacity="0.15"/>
+                    <!-- High Ponytail Hair -->
+                    <path d="M78 30 C 95 10, 110 30, 100 55 Q 85 40 78 30" fill="#374151"/>
+                    <path d="M26 45 C 24 20, 96 20, 94 45 Q 80 25 60 25 Q 40 25 26 45" fill="#374151"/>
+                    <path d="M50 75 L70 75 L74 115 L46 115 Z" fill="url(#fSkinG)"/>
+                    <!-- Sporty Green Hoodie -->
+                    <path d="M28 92 C 38 82, 82 82, 92 92 L 96 120 L 24 120 Z" fill="#059669" filter="url(#fShadow)"/>
+                    <!-- Face -->
+                    <path d="M38 42 Q 38 76 60 78 Q 82 76 82 42 Q 82 28 60 28 Q 38 28 38 42" fill="url(#fSkinG)"/>
+                    <!-- Cap Visor -->
+                    <path d="M28 32 Q 60 18 92 32 Q 98 28 102 33 L 80 36 Z" fill="#047857"/>
+                    <!-- Bright Eyes -->
+                    <ellipse cx="46" cy="49" rx="4.8" ry="6" fill="#111827"/>
+                    <ellipse cx="74" cy="49" rx="4.8" ry="6" fill="#111827"/>
+                    <circle cx="44" cy="46" r="2" fill="#FFFFFF"/>
+                    <circle cx="72" cy="46" r="2" fill="#FFFFFF"/>
+                    <!-- Energetic Open Laugh -->
+                    <path d="M45 61 Q 60 76 75 61 Z" fill="#EF4444" stroke="#991B1B" stroke-width="1"/>
+                </svg>`;
+            } else { // gentle
+                return `<svg viewBox="0 0 120 120" class="w-full h-full">
+                    ${defs}
+                    <circle cx="60" cy="60" r="55" fill="#F97316" opacity="0.15"/>
+                    <path d="M24 45 C 20 20, 100 20, 96 45 C 100 75, 88 110, 88 115 L 32 115 C 32 110, 20 75, 24 45 Z" fill="url(#hairG_fGentle)"/>
+                    <path d="M50 75 L70 75 L74 115 L46 115 Z" fill="url(#fSkinG)"/>
+                    <!-- Cozy Cardigan -->
+                    <path d="M28 92 C 38 82, 82 82, 92 92 L 96 120 L 24 120 Z" fill="#EA580C" filter="url(#fShadow)"/>
+                    <path d="M38 42 Q 38 76 60 78 Q 82 76 82 42 Q 82 28 60 28 Q 38 28 38 42" fill="url(#fSkinG)"/>
+                    <path d="M28 36 Q 50 44 92 36 Q 76 22 60 22 Q 44 22 28 36" fill="url(#hairG_fGentle)"/>
+                    <!-- Soft Smiling Curved Eyes -->
+                    <path d="M40 48 Q 46 41 52 48" stroke="#78350F" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+                    <path d="M68 48 Q 74 41 80 48" stroke="#78350F" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+                    <!-- Soft Blush -->
+                    <circle cx="37" cy="55" r="5.5" fill="#FB7185" opacity="0.4"/>
+                    <circle cx="83" cy="55" r="5.5" fill="#FB7185" opacity="0.4"/>
+                    <!-- Gentle Warm Smile -->
+                    <path d="M48 62 Q 60 70 72 62" stroke="#78350F" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+                </svg>`;
+            }
+        }
+
+        async function generateAiPortrait() {
+            if (!currentArchetype || !currentArchetype.aiPrompt) return;
+
+            const aiBtn = document.getElementById('ai-generate-btn');
+            const aiLoading = document.getElementById('ai-loading');
+            const avatarContainer = document.getElementById('avatar-container');
+
+            // UI Feedback
+            aiBtn.disabled = true;
+            aiBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            aiLoading.classList.remove('hidden');
+
+            const apiKey = ""; // Canvas runtime handles API key injection automatically
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-image:generateContent?key=${apiKey}`;
+
+            const payload = {
+                contents: [{
+                    parts: [{ text: currentArchetype.aiPrompt }]
+                }],
+                generationConfig: {
+                    responseModalities: ['TEXT', 'IMAGE']
+                }
+            };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                const base64Data = result?.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
+
+                if (base64Data) {
+                    const imageUrl = `data:image/png;base64,${base64Data}`;
+                    avatarContainer.innerHTML = `<img src="${imageUrl}" class="w-full h-full object-cover rounded-full fade-in" alt="AI Generated Avatar"/>`;
+                    aiBtn.innerHTML = `<i class="fa-solid fa-check"></i><span>AI 頭像生成成功！</span>`;
+                    aiBtn.classList.remove('from-purple-500', 'to-pink-500');
+                    aiBtn.classList.add('bg-emerald-500');
+                } else {
+                    throw new Error("No image data found in response");
+                }
+            } catch (err) {
+                console.error("AI Generation error:", err);
+                aiBtn.disabled = false;
+                aiBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                aiBtn.innerHTML = `<i class="fa-solid fa-rotate-right"></i><span>重試生成 AI 頭像</span>`;
+            } finally {
+                aiLoading.classList.add('hidden');
+            }
+        }
+
+        function restartQuiz() {
+            document.getElementById('screen-result').classList.add('hidden');
+            document.getElementById('screen-welcome').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
